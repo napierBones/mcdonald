@@ -47,7 +47,7 @@ const Slider = () => {
     setTimeout(() => {
       setCurrentSlideIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
       setFade(true); // Start fade in after changing the image
-    }, 500); // Match this duration with the fade-out duration
+    }, 501); // Match this duration with the fade-out duration
   };
 
   const handlePrevious = () => {
@@ -55,7 +55,7 @@ const Slider = () => {
     setTimeout(() => {
       setCurrentSlideIndex(prev => (prev === 0 ? slides.length - 1 : prev - 1));
       setFade(true); // Start fade in after changing the image
-    }, 500); // Match this duration with the fade-out duration
+    }, 501); // Match this duration with the fade-out duration
   };
 
   return (
