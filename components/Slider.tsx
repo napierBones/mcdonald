@@ -47,7 +47,7 @@ const Slider = () => {
     setTimeout(() => {
       setCurrentSlideIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
       setFade(true); // Start fade in after changing the image
-    }, 501); // Match this duration with the fade-out duration
+    }, 500); // Match this duration with the fade-out duration
   };
 
   const handlePrevious = () => {
@@ -55,13 +55,13 @@ const Slider = () => {
     setTimeout(() => {
       setCurrentSlideIndex(prev => (prev === 0 ? slides.length - 1 : prev - 1));
       setFade(true); // Start fade in after changing the image
-    }, 501); // Match this duration with the fade-out duration
+    }, 500); // Match this duration with the fade-out duration
   };
 
   return (
     <div className="relative flex max-h-[calc(100vh-120px)] items-center justify-center bg-black">
       <div
-        className={`transition-opacity duration-500 ease-in-out ${fade ? 'opacity-100' : 'opacity-0'}`}
+        className={`transition-opacity duration-300 ease-in-out ${fade ? 'opacity-100' : 'opacity-0'}`}
       >
         <Image
           src={slides[currentSlideIndex].image}
