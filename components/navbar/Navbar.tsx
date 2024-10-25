@@ -5,7 +5,7 @@ import { Logo } from './Logo';
 import { LinksRight } from './LinksRight';
 const Navbar = () => {
   return (
-    <Wrapper className="flex h-20  bg-black items-center justify-between py-2 text-yellow-400 text-xl">
+    <Wrapper className="flex flex-wrap min-h-20  bg-black items-center justify-between py-2 text-yellow-400 text-xl">
       {/* LEFT LINKS */}
       <LinksLeft />
       {/* LOGO */}

@@ -1,6 +1,10 @@
 'use client';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from 'react-icons/md';
 
 const slides = [
   {
@@ -26,70 +30,63 @@ const slides = [
 ];
 
 const Slider = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [fade, setFade] = useState(true); // State to control fade effect
 
+  // Automatically change the slide every 5 seconds
   useEffect(() => {
-    const interval = setInterval(
-      () =>
-        setCurrentSlide(prev => (prev === slides.length - 1 ? 0 : prev + 1)),
-      4000
-    );
-    return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000); // Change slide every 5000 milliseconds (5 seconds)
+
+    return () => clearInterval(interval); // Clear the interval on component unmount
   }, []);
 
+  const handleNext = () => {
+    setFade(false); // Start fade out
+    setTimeout(() => {
+      setCurrentSlideIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
+      setFade(true); // Start fade in after changing the image
+    }, 500); // Match this duration with the fade-out duration
+  };
+
+  const handlePrevious = () => {
+    setFade(false); // Start fade out
+    setTimeout(() => {
+      setCurrentSlideIndex(prev => (prev === 0 ? slides.length - 1 : prev - 1));
+      setFade(true); // Start fade in after changing the image
+    }, 500); // Match this duration with the fade-out duration
+  };
+
   return (
-    <div className="relative h-[calc(100vh-120px)]  w-full items-center justify-center  flex">
-      <div className="relative flex h-full w-full items-center justify-center">
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`w-full h-full absolute inset-0 flex  items-center justify-center transition-opacity duration-1000 ease-in-out  ${
-              currentSlide === index ? 'z-10 opacity-100' : 'z-0 opacity-0'
-            } flex flex-col lg:flex-row`}
-          >
-                       {/* image container */}
-            <div className="relative  w-full h-full">
-              <Image src={slide.image} alt="" fill className="" />
-            </div>
-          </div>
-        ))}
+    <div className="relative flex max-h-[calc(100vh-120px)] items-center justify-center bg-black">
+      <div
+        className={`transition-opacity duration-500 ease-in-out ${fade ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <Image
+          src={slides[currentSlideIndex].image}
+          alt={slides[currentSlideIndex].title} // Use title for better accessibility
+          width={1675}
+          height={600}
+          className=""
+        />
       </div>
 
-      <div className="absolute bottom-8 left-1/2 z-20 m-auto flex -translate-x-1/2 transform gap-4">
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`flex h-3 w-3 cursor-pointer items-center justify-center rounded-full ring-1 ring-gray-600 ${
-              currentSlide === index ? 'scale-150' : ''
-            }`}
-            onClick={() => setCurrentSlide(index)}
-          >
-            {currentSlide === index && (
-              <div className="absolute left-1/2 top-1/2 h-[6px] w-[6px] -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-gray-600"></div>
-            )}
-          </div>
-        ))}
+      <div
+        className="absolute bottom-[0%] left-0 top-[0%] flex h-full w-[10%] cursor-pointer items-center justify-center text-3xl font-bold text-yellow-500 duration-300 hover:bg-white hover:opacity-10"
+        onClick={handlePrevious}
+      >
+        <MdOutlineKeyboardArrowLeft className="" />
+      </div>
+
+      <div
+        className="absolute bottom-[0%] right-0 top-[0%] flex h-full w-[10%] cursor-pointer items-center justify-center text-3xl font-bold text-yellow-500 duration-300 hover:bg-white hover:opacity-10"
+        onClick={handleNext}
+      >
+        <MdOutlineKeyboardArrowRight />
       </div>
     </div>
   );
 };
 
 export default Slider;
-
-// return (
-//   <div className="flex h-[calc(100vh-120px)]">
-//     {/* TEXT CONTAINER */}
-//     <div className="flex flex-1 flex-col items-center justify-center gap-2 bg-yellow-300 font-bold text-white">
-//       <p className="p-4 text-center text-2xl uppercase">
-//         {data[currentSlide].title}
-//       </p>
-//       <button className="bg-red-500 px-4 py-4 text-white">Order Now</button>
-//     </div>
-
-//     {/* IMAGE CONTAINER */}
-//     <div className="relative h-full w-full flex-1">
-//       <Image src={data[currentSlide].image} alt="" fill className="" />
-//     </div>
-//   </div>
-// );
-// };
