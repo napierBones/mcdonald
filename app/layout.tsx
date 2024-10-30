@@ -6,6 +6,11 @@ import Navbar from '@/components/navbar/Navbar';
 import Footer from '@/components/Footer';
 import Head from 'next/head';
 
+import QueryProvider from '@/components/QueryProvider';
+import { SessionProvider } from 'next-auth/react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -19,21 +24,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <Head>
-        {/* Set viewport meta tag */}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
-      <body className={inter.className}>
-        <div>
-          {/* h10 */}
-          <Notification />
-          {/* h20 */}
-          <Navbar />
-          {children}
-          <Footer />
-        </div>
-      </body>
-    </html>
+    <SessionProvider>
+      <html lang="en">
+        <Head>
+          {/* Set viewport meta tag */}
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          />
+        </Head>
+        <body className={inter.className}>
+          <QueryProvider>
+            <div>
+              {/* h10 */}
+              <Notification />
+              {/* h20 */}
+              <Navbar />
+              {children}
+              <Footer />
+              <ToastContainer
+                position="bottom-right"
+                theme="dark"
+                autoClose={3000}
+              />
+            </div>
+          </QueryProvider>
+        </body>
+      </html>
+    </SessionProvider>
   );
 }
